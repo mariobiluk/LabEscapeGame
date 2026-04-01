@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    font-family: 'Rajdhani', sans-serif;
+    overflow: hidden;
+    color: #39ff14;
+}
+
+/* FUNDO */
+.bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('./imagens_novas/fundoFinal.png') center/cover no-repeat;
+}
+
+/* OVERLAY MAIS CLARO */
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* antes 0.6 */
+}
+
+/* MENU (mais baixo) */
+.menu {
+    position: absolute;
+    top: 60%;
+    /* antes 50% */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/* BOTÕES (maiores) */
+.btn {
+    display: block;
+    width: 290px;
+    /* maior */
+    margin: 14px auto;
+    padding: 14px;
+    border: 2px solid #39ff14;
+    background: rgba(0, 0, 0, 0.65);
+    color: #39ff14;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #39ff14;
+    color: black;
+}
+
+/* PLAY destaque */
+.play {
+    font-size: 22px;
+    padding: 18px;
+}
+
+/* PARTÍCULAS */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #39ff14;
+    animation: subir 6s linear infinite;
+}
+
+@keyframes subir {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-600px);
+        opacity: 0;
+    }
+}
+
+.aviso-fullscreen {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid #39ff14;
+    color: #39ff14;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-family: 'Orbitron', sans-serif;
+    z-index: 20;
+    animation: fadeOut 6s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
