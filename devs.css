@@ -3,6 +3,12 @@ body {
     font-family: 'Rajdhani', sans-serif;
     color: #39ff14;
   }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000; /* 🔥 ESSENCIAL */
+  }
   
   /* FUNDO */
   .bg {

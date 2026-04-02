@@ -1,74 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<title>Sobre - Zona Contaminada</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="./sobre.css">
+  <meta charset="UTF-8">
+  <title>Sobre - Zona Contaminada</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./sobre.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="./imagens_novas/icone.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./imagens_novas/icone.png">
 </head>
 
 <body>
 
-<div class="bg"></div>
-<div class="overlay"></div>
+  <div class="bg"></div>
+  <div class="overlay"></div>
 
-<!-- BOTÃO VOLTAR -->
-<a href="./index.html" class="voltar">← MENU</a>
+  <!-- BOTÃO VOLTAR -->
+  <a href="./index.html" class="voltar">← MENU</a>
 
-<div class="container">
+  <div class="container">
 
-  <h1>ZONA CONTAMINADA</h1>
+    <h1>ZONA CONTAMINADA</h1>
 
-  <h2>☣ História</h2>
-  <p>
-    Você era apenas um trabalhador comum em um laboratório científico localizado em uma estação espacial,
-    onde experimentos com formas de vida alienígena eram conduzidos diariamente.
-  </p>
+    <h2>☣ História</h2>
 
-  <p>
-    Tudo mudou quando um tonel de resíduos radioativos explodiu, contaminando o ambiente e transformando
-    os alienígenas em criaturas zumbificadas, extremamente violentas e fora de controle.
-  </p>
+    <h3>🧟 Jogador 1 – O Segurança</h3>
+    <p>
+      Você era um simples trabalhador da segurança no laboratório orbital, responsável por monitorar
+      as instalações e garantir que nada saísse do controle. Sua rotina era tranquila até o dia
+      da explosão. Agora, cercado por alienígenas zumbificados e soldados enviados para "eliminar
+      toda vida contaminada", sua única chance é correr e sobreviver. Você não causou o desastre,
+      mas está pagando por ele.
+    </p>
 
-  <p>
-    Para conter o desastre, uma tropa especial de astronautas fortemente armados foi enviada.
-    O objetivo deles é eliminar qualquer forma de vida contaminada — incluindo você.
-  </p>
+    <h3>🧪 Jogador 2 – O Cientista (disponível no multiplayer)</h3>
+    <p>
+      Você é o Dr. Elias, um cientista brilhante e chefe da pesquisa com vida alienígena. Em um
+      momento de negligência, você manuseou um tonel de resíduos radioativos sem seguir os
+      protocolos de segurança. A explosão resultante liberou uma contaminação que transformou os
+      espécimes em criaturas zumbificadas e destruiu parte da estação. Agora, a corporação enviou
+      um esquadrão de extermínio para apagar todas as evidências — incluindo você. Sua fuga é uma
+      corrida contra a culpa e a sobrevivência.
+    </p>
 
-  <p>
-    Agora, cercado por zumbis e caçado por soldados, sua única chance é fugir.
-  </p>
+    <p>
+      Ambos os jogadores fogem pelo mesmo corredor infinito do laboratório, desviando de zumbis,
+      obstáculos e coletando itens que podem ajudar ou atrapalhar. No modo multiplayer, a
+      competição é indireta: quem conseguir chegar mais longe?
+    </p>
 
-  <p>
-    Durante a fuga, você pode encontrar:
-  </p>
+    <p>
+      Durante a fuga, você pode encontrar:
+    </p>
+    <ul>
+      <li><strong>Tubos de ensaio</strong> — aumentam sua vida e resistência</li>
+      <li><strong>Átomos modificados</strong> — concedem velocidade, força e energia temporária</li>
+      <li><strong>Tonéis radioativos</strong> — causam infecção e reduzem sua velocidade</li>
+    </ul>
 
-  <ul>
-    <li><strong>Tubos de ensaio</strong> — aumentam sua vida e resistência</li>
-    <li><strong>Átomos modificados</strong> — concedem velocidade, força e energia temporária</li>
-    <li><strong>Tonéis radioativos</strong> — causam infecção e reduzem sua velocidade</li>
-  </ul>
+    <h2>🎮 Como Jogar (novas regras)</h2>
+    <ul>
+      <li><strong>Movimento automático:</strong> os personagens correm para a frente sozinhos assim que o jogo começa.
+        Basta pular para desviar dos obstáculos.</li>
+      <li><strong>Iniciar o jogo:</strong> qualquer tecla ou clique na tela dá a largada (a partir da primeira
+        interação).</li>
+      <li><strong>Pular (Jogador 1):</strong> tecla <kbd>W</kbd> ou <kbd>↑</kbd> (cima).</li>
+      <li><strong>Pular (Jogador 2 – multiplayer):</strong> tecla <kbd>I</kbd>.</li>
+      <li><strong>Não há teclas de movimento lateral</strong> — a velocidade é automática e constante (com alterações
+        temporárias por itens).</li>
+      <li><strong>ESC</strong> — volta ao menu principal.</li>
+    </ul>
 
-  <h2>🎮 Como Jogar</h2>
-  <ul>
-    <li><strong>→ ou D</strong> — avançar</li>
-    <li><strong>↑ ou W</strong> — pular</li>
-    <li><strong>Use os dois</strong> — pular para frente e desviar de inimigos</li>
-    <li><strong>ESC</strong> — voltar ao menu</li>
-  </ul>
+    <p style="margin-top: 20px; font-style: italic; color: #aaffaa;">
+      *No modo solo, você controla apenas o Segurança. No multiplayer, dois jogadores correm simultaneamente, cada um
+      com sua própria pista e controles independentes.
+    </p>
 
-</div>
+  </div>
 
-<script>
-// ESC volta ao menu
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    window.location.href = "./index.html";
-  }
-});
-</script>
+  <script>
+    // ESC volta ao menu
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        window.location.href = "./index.html";
+      }
+    });
+  </script>
 
 </body>
+
 </html>

@@ -20,6 +20,11 @@ if (MULTIPLAYER) {
 const RUA_TOPO = MULTIPLAYER ? 100 : 200
 const RUA_BASE = MULTIPLAYER ? 280 : 560
 
+// ==================== CONTROLE DE MOVIMENTO AUTOMÁTICO ====================
+let jogoIniciado = false
+let movimentoAtivoJ1 = false
+let movimentoAtivoJ2 = false
+
 // ==================== JOGADOR 1 ====================
 let personagem = new Personagem(120, RUA_BASE - 65, 80, 125, './imagens_novas/andando01.png')
 
@@ -52,6 +57,7 @@ if (MULTIPLAYER) {
 // ==================== SONS ====================
 let motor          = new Audio('./audio/soundtrack.mp3')
 let somPersonagem  = new Audio('./audio/fase1/shadow.wav')
+let somInimigo = new Audio('./audio/zombie.mp3')
 let somObstaculo   = new Audio('./audio/obstaculo.mp3')
 let coletarSom     = new Audio('./audio/life_colectable.mp3')
 let somBoost       = new Audio('./audio/boost.mp3')
@@ -76,8 +82,8 @@ let gameOverTocado   = false
 let nivelDificuldade = 1
 let shake1 = 0
 let shake2 = 0
-let dx     = 0
-let dx2    = 0
+let dx     = 1  // Inicialmente true para movimento automático
+let dx2    = 1  // Inicialmente true para movimento automático
 
 // ==================== FUNDOS ====================
 let imgFundo1       = new Image()
@@ -108,24 +114,44 @@ function redimensionar() {
 window.addEventListener('resize', redimensionar)
 redimensionar()
 
-// ==================== CONTROLES ====================
+// ==================== FUNÇÃO PARA INICIAR O JOGO ====================
+function iniciarMovimento() {
+    if (!jogoIniciado) {
+        jogoIniciado = true
+        movimentoAtivoJ1 = true
+        if (MULTIPLAYER) movimentoAtivoJ2 = true
+        motor.play()
+    }
+}
+
+// ==================== CONTROLES (Apenas pulo) ====================
 document.addEventListener('keydown', (e) => {
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) e.preventDefault()
-
-    if (jogando) motor.play()
-
-    if (e.key === 'w' || e.key === 'ArrowUp')   personagem.pular()
-    if (e.key === 'd' || e.key === 'ArrowRight') dx = 1
-
-    if (MULTIPLAYER) {
-        if (e.key === 'i' || e.key === 'I') personagem2.pular()
-        if (e.key === 'l' || e.key === 'L') dx2 = 1
+    
+    // Primeira tecla pressionada inicia o jogo
+    if (!jogoIniciado) {
+        iniciarMovimento()
+    }
+    
+    // Controles de pulo (mantidos)
+    if (jogando) {
+        if (e.key === 'w' || e.key === 'ArrowUp') {
+            if (jogoIniciado) personagem.pular()
+        }
+        
+        if (MULTIPLAYER) {
+            if (e.key === 'i' || e.key === 'I') {
+                if (jogoIniciado) personagem2.pular()
+            }
+        }
     }
 })
 
-document.addEventListener('keyup', (e) => {
-    if (e.key === 'd' || e.key === 'ArrowRight') dx = 0
-    if (MULTIPLAYER && (e.key === 'l' || e.key === 'L')) dx2 = 0
+// Clique também inicia o jogo
+document.addEventListener('click', () => {
+    if (!jogoIniciado) {
+        iniciarMovimento()
+    }
 })
 
 // ==================== DIFICULDADE ====================
@@ -159,7 +185,7 @@ function atualizarDificuldade() {
 // ==================== COLISÕES J1 ====================
 function verificarColisoes() {
     if (personagem.colisao(inimigo1)) {
-        somPersonagem.play()
+        somInimigo.play()
         personagem.vida--
         personagem.tomarDano()
         inimigo1.reiniciar()
@@ -201,7 +227,7 @@ function verificarColisoes2() {
     if (!MULTIPLAYER) return
 
     if (personagem2.colisao(inimigo2)) {
-        somPersonagem.play()
+        somInimigo.play()
         personagem2.vida--
         personagem2.tomarDano()
         inimigo2.reiniciar()
@@ -373,8 +399,10 @@ function desenharJ1() {
         shake1--
     }
 
-    fundoX -= dx * personagem.velocidadeAtual
-    if (fundoX <= -2400) fundoX = 0
+    if (jogoIniciado && movimentoAtivoJ1 && personagem.vida > 0) {
+        fundoX -= dx * personagem.velocidadeAtual
+        if (fundoX <= -2400) fundoX = 0
+    }
     desenharFundo(ctx, fundoX, canH)
 
     if (personagem.vida > 0) {
@@ -385,7 +413,21 @@ function desenharJ1() {
         if (boostItem.ativo) boostItem.desenhar(ctx)
         if (boss.ativo)      boss.desenhar(ctx)
         personagem.desenhar(ctx)
-        desenharHUD(ctx, personagem, nivelDificuldade, canW, MULTIPLAYER ? 'JOGADOR 1  [ D/seta mover  |  W/seta pular ]' : null)
+        desenharHUD(ctx, personagem, nivelDificuldade, canW, MULTIPLAYER ? 'JOGADOR 1  [ W/↑ pular ]' : 'APERTE QUALQUER TECLA OU CLIQUE PARA CORRER!')
+        
+        // Mensagem de início para o modo solo
+        if (!MULTIPLAYER && !jogoIniciado) {
+            ctx.fillStyle = '#39ff14'
+            ctx.font = 'bold 24px Orbitron'
+            ctx.textAlign = 'center'
+            ctx.shadowColor = '#39ff14'
+            ctx.shadowBlur = 15
+            ctx.fillText('CLIQUE OU APERTE QUALQUER TECLA', canW / 2, canH / 2)
+            ctx.font = '18px Rajdhani'
+            ctx.fillText('para começar a correr', canW / 2, canH / 2 + 40)
+            ctx.textAlign = 'left'
+            ctx.shadowBlur = 0
+        }
     } else {
         desenharGameOverCanvas(ctx, personagem, canW, canH, MULTIPLAYER ? 'J1 - GAME OVER' : 'GAME OVER')
     }
@@ -406,8 +448,10 @@ function desenharJ2() {
         shake2--
     }
 
-    fundoX2 -= dx2 * personagem2.velocidadeAtual
-    if (fundoX2 <= -2400) fundoX2 = 0
+    if (jogoIniciado && movimentoAtivoJ2 && personagem2.vida > 0) {
+        fundoX2 -= dx2 * personagem2.velocidadeAtual
+        if (fundoX2 <= -2400) fundoX2 = 0
+    }
     desenharFundo(ctx, fundoX2, canH)
 
     if (personagem2.vida > 0) {
@@ -418,7 +462,19 @@ function desenharJ2() {
         if (boostItem2.ativo) boostItem2.desenhar(ctx)
         if (boss2.ativo)      boss2.desenhar(ctx)
         personagem2.desenhar(ctx)
-        desenharHUD(ctx, personagem2, nivelDificuldade, canW, 'JOGADOR 2  [ L mover  |  I pular ]')
+        desenharHUD(ctx, personagem2, nivelDificuldade, canW, 'JOGADOR 2  [ I pular ]')
+        
+        // Mensagem de início para o modo multiplayer (jogador 2)
+        if (!jogoIniciado) {
+            ctx.fillStyle = '#39ff14'
+            ctx.font = 'bold 20px Orbitron'
+            ctx.textAlign = 'center'
+            ctx.shadowColor = '#39ff14'
+            ctx.shadowBlur = 10
+            ctx.fillText('AGUARDANDO INÍCIO...', canW / 2, canH / 2)
+            ctx.textAlign = 'left'
+            ctx.shadowBlur = 0
+        }
     } else {
         desenharGameOverCanvas(ctx, personagem2, canW, canH, 'J2 - GAME OVER')
     }
@@ -434,7 +490,7 @@ function atualizarJ1() {
     personagem.animar()
     personagem.atualizarEstado()
 
-    if (dx !== 0) {
+    if (jogoIniciado && movimentoAtivoJ1) {
         inimigo1.mover()
         obstaculo1.mover()
         obstaculo2.mover()
@@ -459,7 +515,7 @@ function atualizarJ2() {
     personagem2.animar()
     personagem2.atualizarEstado()
 
-    if (dx2 !== 0) {
+    if (jogoIniciado && movimentoAtivoJ2) {
         inimigo2.mover()
         obstaculo3.mover()
         obstaculo4.mover()
@@ -506,8 +562,6 @@ function main() {
 }
 
 // ==================== INIT ====================
-// Script carregado dinamicamente: o evento 'load' já disparou.
-// Chamamos main() diretamente.
 console.log('Jogo iniciado — modo: ' + MODO)
 main()
 
