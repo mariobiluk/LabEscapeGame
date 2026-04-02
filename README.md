@@ -183,7 +183,7 @@ RNF04	Loop com requestAnimationFrame
 
 🧾 Créditos
 Desenvolvedor: Mario Biluk
-Product Owner (Professor): Carlos Roberto da SIlva Filho
+Product Owner (Professor): Carlos Roberto da Silva Filho
 
 🌐 Link de Produção
 

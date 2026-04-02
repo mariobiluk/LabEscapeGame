@@ -12,34 +12,30 @@ class Obj {
         this.img.src = img
     }
 
-    desenhar() {
+    desenhar(ctx) {
         if (this.img && this.img.complete && this.img.naturalWidth > 0) {
-            des.drawImage(this.img, this.x, this.y, this.w, this.h)
+            ctx.drawImage(this.img, this.x, this.y, this.w, this.h)
         } else {
-            // Fallback - desenha um retângulo colorido
-            des.fillStyle = '#ff0000'
-            des.fillRect(this.x, this.y, this.w, this.h)
-            des.fillStyle = 'white'
-            des.font = '12px Arial'
-            des.fillText('?', this.x + this.w / 2 - 5, this.y + this.h / 2 + 5)
+            ctx.fillStyle = '#ff0000'
+            ctx.fillRect(this.x, this.y, this.w, this.h)
+            ctx.fillStyle = 'white'
+            ctx.font = '12px Arial'
+            ctx.fillText('?', this.x + this.w / 2 - 5, this.y + this.h / 2 + 5)
         }
     }
 }
 
 // ==================== INIMIGO ANIMADO ====================
-// ==================== INIMIGO ANIMADO ====================
 class InimigoAnimado extends Obj {
     constructor(x, y, w, h, tipo) {
-        super(x, y, w, h, `./imagens_novas/zumbi01.png`)  // imagem base (fallback)
+        super(x, y, w, h, `./imagens_novas/zumbi01.png`)
         this.vel = 5
         this.ativo = true
         this.tipo = tipo
         this.frame = 1
         this.tempo = 0
-
         this.animacaoFrames = []
 
-        // Pré-carregar todas as animações
         for (let i = 1; i <= 6; i++) {
             let imgAnim = new Image()
             imgAnim.src = `./imagens_novas/zumbi0${i}.png`
@@ -65,19 +61,18 @@ class InimigoAnimado extends Obj {
         if (this.frame > 6) this.frame = 1
     }
 
-    desenhar() {
+    desenhar(ctx) {
         if (!this.ativo) return
 
         let frameAtual = this.animacaoFrames[this.frame - 1]
         if (frameAtual && frameAtual.complete && frameAtual.naturalWidth > 0) {
-            des.drawImage(frameAtual, this.x, this.y, this.w, this.h)
+            ctx.drawImage(frameAtual, this.x, this.y, this.w, this.h)
         } else {
-            // Fallback enquanto as imagens carregam
-            des.fillStyle = '#8B0000'
-            des.fillRect(this.x, this.y, this.w, this.h)
-            des.fillStyle = 'white'
-            des.font = '12px Arial'
-            des.fillText('Z', this.x + this.w / 2 - 5, this.y + this.h / 2 + 5)
+            ctx.fillStyle = '#8B0000'
+            ctx.fillRect(this.x, this.y, this.w, this.h)
+            ctx.fillStyle = 'white'
+            ctx.font = '12px Arial'
+            ctx.fillText('Z', this.x + this.w / 2 - 5, this.y + this.h / 2 + 5)
         }
     }
 }
@@ -117,8 +112,6 @@ class Coletavel extends Obj {
             this.x -= this.vel
             if (this.x < -100) this.reiniciar()
         }
-
-        // Sistema de respawn
         if (!this.ativo) {
             this.contador++
             if (this.contador > this.delaySpawn + 100) {
@@ -158,8 +151,6 @@ class Boost extends Obj {
             this.x -= this.vel
             if (this.x < -100) this.reiniciar()
         }
-
-        // Sistema de respawn
         if (!this.ativo) {
             this.contador++
             if (this.contador > this.delaySpawn + 100) {
@@ -182,7 +173,6 @@ class Boost extends Obj {
     }
 }
 
-// ==================== BOSS ====================
 // ==================== BOSS ====================
 class Boss extends Obj {
     constructor(x, y, w, h) {
@@ -222,32 +212,32 @@ class Boss extends Obj {
         if (this.frame > 8) this.frame = 1
     }
 
-    desenhar() {
+    desenhar(ctx) {
         if (!this.ativo) return
 
         let frameAtual = this.animacaoFrames[this.frame - 1]
         if (frameAtual && frameAtual.complete && frameAtual.naturalWidth > 0) {
-            des.drawImage(frameAtual, this.x, this.y, this.w, this.h)
+            ctx.drawImage(frameAtual, this.x, this.y, this.w, this.h)
         } else {
-            des.fillStyle = '#800080'
-            des.fillRect(this.x, this.y, this.w, this.h)
-            des.fillStyle = 'white'
-            des.font = '12px Arial'
-            des.fillText('B', this.x + this.w / 2 - 5, this.y + this.h / 2 + 5)
+            ctx.fillStyle = '#800080'
+            ctx.fillRect(this.x, this.y, this.w, this.h)
+            ctx.fillStyle = 'white'
+            ctx.font = '12px Arial'
+            ctx.fillText('B', this.x + this.w / 2 - 5, this.y + this.h / 2 + 5)
         }
     }
 }
 
 // ==================== TEXTO ====================
 class Text {
-    desenhar(texto, x, y, cor, fonte) {
-        des.fillStyle = cor
-        des.font = fonte
-        des.fillText(texto, x, y)
+    desenhar(ctx, texto, x, y, cor, fonte) {
+        ctx.fillStyle = cor
+        ctx.font = fonte
+        ctx.fillText(texto, x, y)
     }
 }
 
-// ==================== PERSONAGEM ====================
+// ==================== PERSONAGEM (Jogador 1) ====================
 class Personagem extends Obj {
 
     dir = 0
@@ -266,8 +256,7 @@ class Personagem extends Obj {
     trail = []
     danoFlash = 0
 
-    // Gravidade
-    gravidade = 0.5
+    gravidade = 0.4
     impulso = -12
     velY = 0
     noChao = false
@@ -278,7 +267,6 @@ class Personagem extends Obj {
         this.chaoY = y
         this.animacaoFrames = []
 
-        // Pré-carregar todas as animações
         for (let i = 1; i <= 12; i++) {
             let imgAnim = new Image()
             imgAnim.src = `./imagens_novas/correndo0${i}.png`
@@ -286,11 +274,10 @@ class Personagem extends Obj {
         }
     }
 
-    mover() {
-        // Gravidade
+    mover(RUA_TOPO) {
         this.velY += this.gravidade
         this.y += this.velY
-
+    
         if (this.y >= this.chaoY) {
             this.y = this.chaoY
             this.velY = 0
@@ -298,13 +285,12 @@ class Personagem extends Obj {
         } else {
             this.noChao = false
         }
-
-        // Limite superior
-        // Limite superior — era hardcoded 200, agora respeita RUA_TOPO
-        if (this.y < RUA_TOPO) {
-            this.y = RUA_TOPO
-            if (this.velY < 0) this.velY = 0
-        }
+    
+        // REMOVA ou COMENTE este bloco que corta o pulo:
+        // if (this.y < RUA_TOPO) {
+        //     this.y = RUA_TOPO
+        //     if (this.velY < 0) this.velY = 0
+        // }
     }
 
     pular() {
@@ -315,7 +301,7 @@ class Personagem extends Obj {
     }
 
     aplicarSlow() {
-        if (this.boostTimer <= 0) { // Não aplica slow se estiver com boost
+        if (this.boostTimer <= 0) {
             this.velocidadeAtual = 4
             this.slowTimer = 60
         }
@@ -324,7 +310,7 @@ class Personagem extends Obj {
     aplicarBoost() {
         this.velocidadeAtual = 16
         this.boostTimer = 80
-        if (this.slowTimer > 0) this.slowTimer = 0 // Remove slow se tiver
+        if (this.slowTimer > 0) this.slowTimer = 0
     }
 
     tomarDano() {
@@ -332,7 +318,6 @@ class Personagem extends Obj {
     }
 
     atualizarEstado() {
-        // Trail effect
         this.trail.push({ x: this.x, y: this.y })
         if (this.trail.length > 10) this.trail.shift()
 
@@ -357,47 +342,42 @@ class Personagem extends Obj {
         this.velocidadeAtual = this.velocidadeBase
     }
 
-    desenhar() {
-        // Trail effect quando em boost
+    desenhar(ctx) {
         if (this.boostTimer > 0) {
             for (let i = 0; i < this.trail.length; i++) {
                 let t = this.trail[i]
-                des.globalAlpha = i / 10
+                ctx.globalAlpha = i / 10
                 if (this.animacaoFrames[this.frame - 1] && this.animacaoFrames[this.frame - 1].complete) {
-                    des.drawImage(this.animacaoFrames[this.frame - 1], t.x, t.y, this.w, this.h)
+                    ctx.drawImage(this.animacaoFrames[this.frame - 1], t.x, t.y, this.w, this.h)
                 } else {
-                    des.fillStyle = `rgba(0, 200, 255, ${0.3 - i / 30})`
-                    des.fillRect(t.x, t.y, this.w, this.h)
+                    ctx.fillStyle = `rgba(0, 200, 255, ${0.3 - i / 30})`
+                    ctx.fillRect(t.x, t.y, this.w, this.h)
                 }
             }
-            des.globalAlpha = 1
+            ctx.globalAlpha = 1
 
-            // Efeito de brilho
-            des.beginPath()
-            des.arc(this.x + this.w / 2, this.y + this.h / 2, this.w / 1.5, 0, Math.PI * 2)
-            des.fillStyle = "rgba(0,200,255,0.2)"
-            des.fill()
+            ctx.beginPath()
+            ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.w / 1.5, 0, Math.PI * 2)
+            ctx.fillStyle = "rgba(0,200,255,0.2)"
+            ctx.fill()
         }
 
         if (this.danoFlash > 0) {
-            des.globalAlpha = 0.5
+            ctx.globalAlpha = 0.5
         }
 
-        // Desenhar personagem
         if (this.animacaoFrames[this.frame - 1] && this.animacaoFrames[this.frame - 1].complete) {
-            des.drawImage(this.animacaoFrames[this.frame - 1], this.x, this.y, this.w, this.h)
+            ctx.drawImage(this.animacaoFrames[this.frame - 1], this.x, this.y, this.w, this.h)
         } else {
-            // Fallback
-            des.fillStyle = '#00ff00'
-            des.fillRect(this.x, this.y, this.w, this.h)
+            ctx.fillStyle = '#00ff00'
+            ctx.fillRect(this.x, this.y, this.w, this.h)
         }
 
-        des.globalAlpha = 1
+        ctx.globalAlpha = 1
     }
 
     colisao(obj) {
         let margem = 30
-
         return (
             this.x + margem < obj.x + obj.w &&
             this.x + this.w - margem > obj.x &&
@@ -424,7 +404,177 @@ class Personagem extends Obj {
         }
 
         if (this.frame > 5) this.frame = 1
+    }
+}
 
-        // Não precisa recarregar a imagem, já temos os frames pré-carregados
+// ==================== PERSONAGEM 2 (Jogador 2 - Multiplayer) ====================
+class Personagem2 extends Obj {
+
+    dir = 0
+    velocidadeBase = 10
+    velocidadeAtual = 10
+
+    vida = 5
+    pontos = 0
+
+    frame = 1
+    tempo = 0
+
+    slowTimer = 0
+    boostTimer = 0
+
+    trail = []
+    danoFlash = 0
+
+    gravidade = 0.4
+    impulso = -12
+    velY = 0
+    noChao = false
+    chaoY
+
+    constructor(x, y, w, h) {
+        super(x, y, w, h, './imagens_novas/personagem2_01.png')
+        this.chaoY = y
+        this.animacaoFrames = []
+
+        // Personagem 2 usa imagens personagem2_01 até personagem2_07
+        for (let i = 1; i <= 7; i++) {
+            let imgAnim = new Image()
+            imgAnim.src = `./imagens_novas/personagem2_0${i}.png`
+            this.animacaoFrames.push(imgAnim)
+        }
+    }
+
+    mover(RUA_TOPO) {
+        this.velY += this.gravidade
+        this.y += this.velY
+    
+        if (this.y >= this.chaoY) {
+            this.y = this.chaoY
+            this.velY = 0
+            this.noChao = true
+        } else {
+            this.noChao = false
+        }
+    
+        // REMOVA este bloco:
+        // if (this.y < RUA_TOPO) {
+        //     this.y = RUA_TOPO
+        //     if (this.velY < 0) this.velY = 0
+        // }
+    }
+
+    pular() {
+        if (this.noChao) {
+            this.velY = this.impulso
+            this.noChao = false
+        }
+    }
+
+    aplicarSlow() {
+        if (this.boostTimer <= 0) {
+            this.velocidadeAtual = 4
+            this.slowTimer = 60
+        }
+    }
+
+    aplicarBoost() {
+        this.velocidadeAtual = 16
+        this.boostTimer = 80
+        if (this.slowTimer > 0) this.slowTimer = 0
+    }
+
+    tomarDano() {
+        this.danoFlash = 10
+    }
+
+    atualizarEstado() {
+        this.trail.push({ x: this.x, y: this.y })
+        if (this.trail.length > 10) this.trail.shift()
+
+        if (this.danoFlash > 0) this.danoFlash--
+
+        if (this.slowTimer > 0) {
+            this.slowTimer--
+            if (this.slowTimer === 0 && this.boostTimer <= 0) {
+                this.velocidadeAtual = this.velocidadeBase
+            }
+            return
+        }
+
+        if (this.boostTimer > 0) {
+            this.boostTimer--
+            if (this.boostTimer === 0 && this.slowTimer <= 0) {
+                this.velocidadeAtual = this.velocidadeBase
+            }
+            return
+        }
+
+        this.velocidadeAtual = this.velocidadeBase
+    }
+
+    desenhar(ctx) {
+        if (this.boostTimer > 0) {
+            for (let i = 0; i < this.trail.length; i++) {
+                let t = this.trail[i]
+                ctx.globalAlpha = i / 10
+                if (this.animacaoFrames[this.frame - 1] && this.animacaoFrames[this.frame - 1].complete) {
+                    ctx.drawImage(this.animacaoFrames[this.frame - 1], t.x, t.y, this.w, this.h)
+                } else {
+                    ctx.fillStyle = `rgba(255, 150, 0, ${0.3 - i / 30})`
+                    ctx.fillRect(t.x, t.y, this.w, this.h)
+                }
+            }
+            ctx.globalAlpha = 1
+
+            ctx.beginPath()
+            ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.w / 1.5, 0, Math.PI * 2)
+            ctx.fillStyle = "rgba(255,150,0,0.2)"
+            ctx.fill()
+        }
+
+        if (this.danoFlash > 0) {
+            ctx.globalAlpha = 0.5
+        }
+
+        if (this.animacaoFrames[this.frame - 1] && this.animacaoFrames[this.frame - 1].complete) {
+            ctx.drawImage(this.animacaoFrames[this.frame - 1], this.x, this.y, this.w, this.h)
+        } else {
+            ctx.fillStyle = '#ff8800'
+            ctx.fillRect(this.x, this.y, this.w, this.h)
+        }
+
+        ctx.globalAlpha = 1
+    }
+
+    colisao(obj) {
+        let margem = 30
+        return (
+            this.x + margem < obj.x + obj.w &&
+            this.x + this.w - margem > obj.x &&
+            this.y + margem < obj.y + obj.h &&
+            this.y + this.h - margem > obj.y
+        )
+    }
+
+    passou(obj) {
+        return obj.x <= -100
+    }
+
+    animar() {
+        this.tempo++
+
+        if (!this.noChao) {
+            this.frame = 1
+            return
+        }
+
+        if (this.tempo > 8) {
+            this.tempo = 0
+            this.frame++
+        }
+
+        // Personagem 2 tem 7 frames de animação
+        if (this.frame > 7) this.frame = 1
     }
 }
