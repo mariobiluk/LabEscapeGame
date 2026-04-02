@@ -221,6 +221,8 @@
 
     <div id="labelModo"></div>
 
+    <div id="avisoF5">Pressione F5 para reiniciar</div>
+
     <!-- Scripts carregados só quando o jogo inicia -->
     <script>
         function iniciarJogo(modo) {
@@ -254,12 +256,9 @@
             s.onload = callback
             document.body.appendChild(s)
         }
-
-        // ESC volta ao menu
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') window.location.href = './index.html'
-        })
     </script>
+
+    <script src="./audio.js"></script>
 
 </body>
 
