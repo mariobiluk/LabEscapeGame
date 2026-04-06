@@ -1,0 +1,173 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     background: #000;
+     font-family: 'Rajdhani', sans-serif;
+     color: #39ff14;
+     overflow: hidden;
+ }
+
+ /* ========================
+       TELA DE SELEÇÃO DE MODO
+    ========================= */
+ #telaSelecao {
+     position: fixed;
+     inset: 0;
+     z-index: 100;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     background: url('./imagens_novas/fundoFinal.png') center/cover no-repeat;
+ }
+
+ #telaSelecao::before {
+     content: '';
+     position: absolute;
+     inset: 0;
+     background: rgba(0, 0, 0, 0.65);
+ }
+
+ .selecao-box {
+     position: relative;
+     text-align: center;
+     padding: 50px 60px;
+     border: 2px solid #39ff14;
+     background: rgba(0, 0, 0, 0.7);
+     box-shadow: 0 0 30px rgba(57, 255, 20, 0.2);
+ }
+
+ .selecao-box h1 {
+     font-family: 'Orbitron', sans-serif;
+     font-size: 2rem;
+     margin-bottom: 10px;
+     text-shadow: 0 0 15px #39ff14;
+     letter-spacing: 3px;
+ }
+
+ .selecao-box p.sub {
+     color: #aaffaa;
+     margin-bottom: 40px;
+     font-size: 1rem;
+ }
+
+ .modos {
+     display: flex;
+     gap: 30px;
+     justify-content: center;
+ }
+
+ .modo-btn {
+     width: 200px;
+     padding: 28px 20px;
+     border: 2px solid #39ff14;
+     background: rgba(0, 0, 0, 0.6);
+     color: #39ff14;
+     font-family: 'Orbitron', sans-serif;
+     font-size: 0.85rem;
+     cursor: pointer;
+     transition: 0.2s;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 12px;
+     letter-spacing: 1px;
+ }
+
+ .modo-btn:hover {
+     background: #39ff14;
+     color: #000;
+     box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+ }
+
+ .modo-btn .icone {
+     font-size: 2.2rem;
+ }
+
+ .modo-btn .descricao {
+     font-family: 'Rajdhani', sans-serif;
+     font-size: 0.78rem;
+     opacity: 0.8;
+     line-height: 1.4;
+ }
+
+ .voltar-menu {
+     position: relative;
+     margin-top: 30px;
+     padding: 8px 20px;
+     border: 1px solid #39ff14;
+     background: transparent;
+     color: #39ff14;
+     font-family: 'Orbitron', sans-serif;
+     font-size: 0.7rem;
+     cursor: pointer;
+     letter-spacing: 1px;
+     transition: 0.2s;
+     text-decoration: none;
+     display: inline-block;
+ }
+
+ .voltar-menu:hover {
+     background: #39ff14;
+     color: #000;
+ }
+
+ /* ========================
+       ÁREA DE JOGO
+    ========================= */
+ #telaJogo {
+     display: none;
+     flex-direction: column;
+     width: 100vw;
+     height: 100vh;
+ }
+
+ /* Divisor entre os dois canvas no multiplayer */
+ #divisor {
+     display: none;
+     width: 100%;
+     height: 4px;
+     background: #39ff14;
+     box-shadow: 0 0 10px #39ff14;
+     flex-shrink: 0;
+ }
+
+ canvas {
+     display: block;
+     width: 100%;
+ }
+
+ /* Solo: canvas1 ocupa tudo */
+ #des1 {
+     flex: 1;
+ }
+
+ /* Multiplayer: cada canvas ocupa metade */
+ body.multiplayer #des1 {
+     height: 50vh;
+ }
+
+ body.multiplayer #des2 {
+     height: 50vh;
+ }
+
+ body.multiplayer #divisor {
+     display: block;
+ }
+
+ /* Label de modo no canto */
+ #labelModo {
+     display: none;
+     position: fixed;
+     top: 6px;
+     right: 14px;
+     font-family: 'Orbitron', sans-serif;
+     font-size: 0.65rem;
+     color: rgba(57, 255, 20, 0.5);
+     z-index: 10;
+     letter-spacing: 1px;
+ }

@@ -32,57 +32,7 @@
 
     <audio id="musicaMenu" src="./audio/soundtrack.mp3" loop></audio>
 
-    <script>
-        // PARTÍCULAS
-        const pContainer = document.getElementById('particles');
-
-        for (let i = 0; i < 20; i++) {
-            let p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.bottom = '0px';
-            p.style.animationDuration = (4 + Math.random() * 4) + 's';
-            pContainer.appendChild(p);
-
-        }
-
-        // TENTA fullscreen ao clicar em qualquer lugar
-        document.addEventListener("click", () => {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => { });
-            }
-        }, { once: true });
-
-        // some o aviso depois
-        setTimeout(() => {
-            const aviso = document.getElementById("aviso");
-            if (aviso) aviso.style.display = "none";
-        }, 6000);
-
-        const musica = document.getElementById("musicaMenu")
-        musica.volume = 0.2
-
-        let musicaIniciada = false
-
-        function iniciarMusica() {
-            if (!musicaIniciada) {
-                musica.play()
-                musicaIniciada = true
-            }
-        }
-
-        // 🔥 começa com qualquer tecla (incluindo F11)
-        document.addEventListener("keydown", iniciarMusica)
-
-        // 🔥 começa também com clique
-        document.addEventListener("click", iniciarMusica, { once: true })
-
-        // botão JOGAR
-        function pararMusica() {
-            musica.pause()
-        }
-    </script>
-
+    <script src="./menu.js"></script>
     <script src="./audio.js"></script>
 
 </body>

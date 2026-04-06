@@ -482,6 +482,9 @@ function desenharJ2() {
     if (shake2 > 0) ctx.restore()
 }
 
+
+
+
 // ==================== ATUALIZAR J1 ====================
 function atualizarJ1() {
     if (personagem.vida <= 0) return
